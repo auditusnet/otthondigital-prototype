@@ -11,7 +11,7 @@
 .nav{position:relative}.nav-products{position:static}.products-trigger{display:flex;align-items:center;gap:7px;cursor:pointer}.products-trigger:after{content:"⌄";font-size:12px;color:var(--muted)}
 .mega-menu{display:none;position:absolute;left:0;right:0;top:100%;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);box-shadow:0 18px 35px rgba(23,33,27,.12);z-index:20}.nav-products.open .mega-menu{display:block}
 .mega-inner{max-width:var(--max);margin:auto;padding:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:34px}.mega-col+.mega-col{border-left:1px solid var(--line);padding-left:34px}.mega-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--green);margin-bottom:12px}
-.cat-acc{border-bottom:1px solid #edf1ee}.cat-head{display:grid;grid-template-columns:1fr 34px;align-items:center;min-height:43px}.cat-main{font-size:14px;font-weight:750;padding:10px 8px;border-radius:8px}.cat-main:hover,.subcats a:hover{background:var(--bg)}.cat-toggle{width:32px;height:32px;border:0;background:transparent;border-radius:8px;cursor:pointer;color:var(--muted);font-size:17px}.cat-toggle:hover{background:var(--green-soft);color:var(--green)}.cat-acc.open .cat-toggle{transform:rotate(180deg)}.subcats{display:none;padding:0 0 9px 12px}.cat-acc.open .subcats{display:block}.subcats a{display:block;padding:7px 10px;border-radius:7px;font-size:12.5px;color:var(--muted)}
+.cat-acc{border-bottom:1px solid #edf1ee}.cat-head{display:grid;grid-template-columns:1fr 34px;align-items:center;min-height:43px;cursor:pointer;border-radius:8px}.cat-head:hover{background:var(--bg)}.cat-main{font-size:14px;font-weight:750;padding:10px 8px;border-radius:8px}.subcats a:hover{background:var(--bg)}.cat-toggle{width:32px;height:32px;border:0;background:transparent;border-radius:8px;cursor:pointer;color:var(--muted);font-size:17px}.cat-toggle:hover{background:var(--green-soft);color:var(--green)}.cat-acc.open .cat-toggle{transform:rotate(180deg)}.subcats{display:none;padding:0 0 9px 12px}.cat-acc.open .subcats{display:block}.subcats a{display:block;padding:7px 10px;border-radius:7px;font-size:12.5px;color:var(--muted)}
 .mega-footer{grid-column:1/-1;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;font-size:13px}.mega-footer span{color:var(--muted)}.mega-footer a{font-weight:800;color:var(--green)}
 @media(max-width:900px){.headrow{grid-template-columns:1fr auto}.search{grid-column:1/-1;grid-row:2}.nav{display:none}.hero-grid,.season-box,.wizard{grid-template-columns:1fr}.hero-copy{padding:20px 0}h1{font-size:43px}.grid8,.catgrid,.products{grid-template-columns:repeat(2,1fr)}.logo-row{grid-template-columns:repeat(3,1fr)}.three,.trust,.footer-grid{grid-template-columns:1fr 1fr}.trust-main{grid-column:1/-1}}
 @media(max-width:560px){.wrap{padding:0 18px}.top{display:none}.actions span:first-child{display:none}.hero{padding-top:25px}h1{font-size:38px}.lead{font-size:17px}.buttons{flex-direction:column}.hero-visual{min-height:300px}.grid8,.catgrid,.products,.three,.trust,.footer-grid{grid-template-columns:1fr}.logo-row{grid-template-columns:repeat(2,1fr)}.newsletter-box{display:block}.email{min-width:0;margin-top:18px}.season-box{padding:28px}.section{padding:40px 0}}
@@ -37,12 +37,21 @@
 <footer class="footer"><div class="wrap footer-grid"><div><div class="logo" style="color:white">otthon<span>digital</span></div><p>Okosotthon termékek és műszaki segítség.</p></div><div><b>Vásárlás</b><p>Szállítás<br>Fizetés<br>Garancia<br>Elállás</p></div><div><b>Segítség</b><p>Kapcsolat<br>GYIK<br>Útmutatók<br>Kompatibilitás</p></div><div><b>Fiókom</b><p>Rendeléseim<br>Kosár<br>Adatkezelés<br>ÁSZF</p></div></div></footer>
 <script>
 (function(){
-const m=document.getElementById('productsMenu'),t=document.getElementById('productsMenuTrigger');
-if(!m||!t)return;
-function openMenu(v){m.classList.toggle('open',v);t.setAttribute('aria-expanded',v?'true':'false')}
-t.addEventListener('click',e=>{e.stopPropagation();openMenu(!m.classList.contains('open'))});
-document.querySelectorAll('.cat-toggle').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const x=b.closest('.cat-acc'),v=!x.classList.contains('open');x.classList.toggle('open',v);b.setAttribute('aria-expanded',v?'true':'false')}));
-document.addEventListener('click',e=>{if(!m.contains(e.target))openMenu(false)});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')openMenu(false)});
+ const menu=document.getElementById('productsMenu'), trigger=document.getElementById('productsMenuTrigger');
+ if(!menu||!trigger)return;
+ function setMenu(v){menu.classList.toggle('open',v);trigger.setAttribute('aria-expanded',v?'true':'false')}
+ trigger.addEventListener('click',function(e){e.stopPropagation();setMenu(!menu.classList.contains('open'));});
+ document.querySelectorAll('.cat-head').forEach(function(row){
+   row.addEventListener('click',function(e){
+     e.preventDefault(); e.stopPropagation();
+     const item=row.closest('.cat-acc');
+     const btn=row.querySelector('.cat-toggle');
+     const opening=!item.classList.contains('open');
+     item.classList.toggle('open',opening);
+     if(btn) btn.setAttribute('aria-expanded',opening?'true':'false');
+   });
+ });
+ document.addEventListener('click',function(e){if(!menu.contains(e.target))setMenu(false);});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
 })();
 </script></body></html>
