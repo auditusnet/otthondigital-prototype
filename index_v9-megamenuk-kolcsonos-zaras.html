@@ -163,24 +163,44 @@ document.querySelectorAll('.mega-cat-item > .mega-link').forEach(function(link){
 </script>
 <script>
 (function(){
-  var triggers = [
-    ['.mega-trigger', '.mega'],
-    ['.solutions-trigger', '.solutions-wrap'],
-    ['.brands-trigger', '.brands-wrap']
-  ];
+  var products = document.getElementById('productsMenu');
+  var productsTrigger = document.getElementById('productsMenuTrigger');
+  var solutions = document.querySelector('.solutions-wrap');
+  var solutionsTrigger = document.querySelector('.solutions-trigger');
+  var brands = document.querySelector('.brands-wrap');
+  var brandsTrigger = document.querySelector('.brands-trigger');
 
-  triggers.forEach(function(pair){
-    var trigger = document.querySelector(pair[0]);
-    if(!trigger) return;
+  function closeProducts(){
+    if(products) products.classList.remove('open');
+    if(productsTrigger) productsTrigger.setAttribute('aria-expanded','false');
+  }
+  function closeSolutions(){
+    if(solutions) solutions.classList.remove('open');
+  }
+  function closeBrands(){
+    if(brands) brands.classList.remove('open');
+  }
 
-    trigger.addEventListener('click', function(){
-      triggers.forEach(function(other){
-        if(other[0] === pair[0]) return;
-        var el = document.querySelector(other[1]);
-        if(el) el.classList.remove('open');
-      });
-    }, true);
-  });
+  if(productsTrigger){
+    productsTrigger.addEventListener('click',function(){
+      closeSolutions();
+      closeBrands();
+    },true);
+  }
+
+  if(solutionsTrigger){
+    solutionsTrigger.addEventListener('click',function(){
+      closeProducts();
+      closeBrands();
+    },true);
+  }
+
+  if(brandsTrigger){
+    brandsTrigger.addEventListener('click',function(){
+      closeProducts();
+      closeSolutions();
+    },true);
+  }
 })();
 </script>
 </body></html>
